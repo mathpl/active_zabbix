@@ -7,6 +7,7 @@ import (
 	"io"
 	"net"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -34,6 +35,7 @@ type ZabbixConn struct {
 }
 
 func NewZabbixConn(addr string, receive_timeout uint, send_timeout uint) (zc ZabbixConn, err error) {
+	addr = strings.Replace(addr, "zbx://", "")
 	zc.addr, err = net.ResolveTCPAddr("tcp", addr)
 	zc.receive_timeout = time.Duration(receive_timeout) * time.Millisecond
 	zc.send_timeout = time.Duration(send_timeout) * time.Millisecond
