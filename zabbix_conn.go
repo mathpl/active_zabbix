@@ -1,4 +1,4 @@
-package plugins
+package active_zabbix
 
 import (
 	"encoding/binary"
