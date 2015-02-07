@@ -1,2 +1,2 @@
-# zabbix
-Zabbix agent library
+# active_zabbix
+Zabbix active agent library
