@@ -14,10 +14,10 @@ func main() {
 	}
 
 	metric_chan := make(chan *active_zabbix.ZabbixMetricRequestJson, 1)
-	go zs.Listen(metric_chan)
+	stopchan := make(chan bool, 1)
+	go zs.Listen(metric_chan, stopchan)
 
 	for metrics := range metric_chan {
 		fmt.Printf("%+V\n", metrics)
-		zs.Close()
 	}
 }

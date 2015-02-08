@@ -33,13 +33,22 @@ func (zs *ZabbixActiveServer) Close() {
 	zs.Close()
 }
 
-func (zs *ZabbixActiveServer) Listen(data_chan chan *ZabbixMetricRequestJson) error {
+func (zs *ZabbixActiveServer) Listen(data_chan chan *ZabbixMetricRequestJson, stop_chan chan bool) error {
 	for {
-		conn, err := zs.listener.Accept()
-		if err == nil {
-			go zs.handle_connection(conn, data_chan)
+		select {
+		case <-stop_chan:
+			zs.Close()
+			return nil
+		default:
+			conn, err := zs.listener.Accept()
+			if err == nil {
+				go zs.handle_connection(conn, data_chan)
+			}
+
 		}
 	}
+
+	return nil
 }
 
 func (zs *ZabbixActiveServer) handle_connection(conn net.Conn, data_chan chan *ZabbixMetricRequestJson) error {
