@@ -1,7 +1,6 @@
 package active_zabbix
 
 import (
-	"encoding/json"
 	"net"
 	"time"
 )
@@ -30,7 +29,7 @@ func NewZabbixActiveServer(addr string, receive_timeout uint, send_timeout uint)
 }
 
 func (zs *ZabbixActiveServer) Close() {
-	zs.Close()
+	zs.listener.Close()
 }
 
 func (zs *ZabbixActiveServer) Listen(data_chan chan *ZabbixMetricRequestJson, stop_chan chan bool) error {
@@ -58,12 +57,7 @@ func (zs *ZabbixActiveServer) handle_connection(conn net.Conn, data_chan chan *Z
 	if err != nil {
 		return err
 	} else {
-		var unmarshalledData ZabbixMetricRequestJson
-		err = json.Unmarshal(data, &unmarshalledData)
-		if err != nil {
-			return err
-		}
-		data_chan <- &unmarshalledData
+		data_char <- data
 	}
 
 	return err
