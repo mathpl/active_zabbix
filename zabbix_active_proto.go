@@ -22,6 +22,18 @@ type ActiveCheckResponseJson struct {
 	Data     []ActiveCheckKeyJson `json:"data"`
 }
 
+type ZabbixMetricRequestJson struct {
+	Request string                `json:"request"`
+	Data    []ZabbixMetricKeyJson `json:"data"`
+}
+
+type ZabbixMetricKeyJson struct {
+	Host  string `json:"host"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
+	Clock string `json:"clock"`
+}
+
 type ZabbixActiveProto struct {
 	receive_timeout time.Duration
 	send_timeout    time.Duration

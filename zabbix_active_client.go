@@ -17,7 +17,7 @@ type ZabbixActiveClient struct {
 	ZabbixActiveProto
 }
 
-func NewZabbixClient(addr string, receive_timeout uint, send_timeout uint) (zc ZabbixActiveClient, err error) {
+func NewZabbixActiveClient(addr string, receive_timeout uint, send_timeout uint) (zc ZabbixActiveClient, err error) {
 	addr = strings.Replace(addr, "zbx://", "", 1)
 	zc.addr, err = net.ResolveTCPAddr("tcp", addr)
 	zc.receive_timeout = time.Duration(receive_timeout) * time.Millisecond
@@ -41,6 +41,16 @@ func (zc *ZabbixActiveClient) cleanupConn() {
 		zc.conn.Close()
 		zc.conn = nil
 	}
+}
+
+func (zc *ZabbixActiveClient) ZabbixSendAndForget(data []byte) (err error) {
+	err = zc.ZabbixSend(data)
+	if err != nil {
+		return
+	}
+	zc.cleanupConn()
+
+	return
 }
 
 func (zc *ZabbixActiveClient) ZabbixSend(data []byte) (err error) {
