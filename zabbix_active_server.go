@@ -36,8 +36,7 @@ func (zs *ZabbixActiveServer) Listen(data_chan chan *ZabbixMetricRequestJson, st
 	for {
 		select {
 		case <-stop_chan:
-			zs.Close()
-			return nil
+			break
 		default:
 			conn, err := zs.listener.Accept()
 			if err == nil {
