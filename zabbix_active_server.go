@@ -56,7 +56,7 @@ func (zs *ZabbixActiveServer) handle_connection(conn net.Conn, data_chan chan *Z
 	if err != nil {
 		return err
 	} else {
-		data_char <- data
+		data_chan <- data
 	}
 
 	return err
