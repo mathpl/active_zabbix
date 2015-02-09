@@ -32,11 +32,11 @@ func (zs *ZabbixActiveServer) Close() {
 	zs.listener.Close()
 }
 
-func (zs *ZabbixActiveServer) Listen(data_chan chan *ZabbixMetricRequestJson, stop_chan chan bool) error {
+func (zs *ZabbixActiveServer) Listen(data_chan chan []byte, stop_chan chan bool) error {
 	for {
 		select {
 		case <-stop_chan:
-			break
+			return nil
 		default:
 			conn, err := zs.listener.Accept()
 			if err == nil {
@@ -49,7 +49,7 @@ func (zs *ZabbixActiveServer) Listen(data_chan chan *ZabbixMetricRequestJson, st
 	return nil
 }
 
-func (zs *ZabbixActiveServer) handle_connection(conn net.Conn, data_chan chan *ZabbixMetricRequestJson) error {
+func (zs *ZabbixActiveServer) handle_connection(conn net.Conn, data_chan chan []byte) error {
 	defer conn.Close()
 
 	data, err := zs.zabbixReceive(conn)

@@ -88,6 +88,7 @@ func (zc *ZabbixActiveClient) FetchActiveChecks(host string) (hc HostActiveKeys,
 			// Parse json for key names
 			var unmarshalledResult ActiveCheckResponseJson
 			//Check what's the result on no keys
+
 			err = json.Unmarshal(result, &unmarshalledResult)
 			if err != nil {
 				return
