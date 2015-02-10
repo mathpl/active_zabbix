@@ -13,7 +13,7 @@ func main() {
 		fmt.Print(err)
 	}
 
-	metric_chan := make(chan *active_zabbix.ZabbixMetricRequestJson, 1)
+	metric_chan := make(chan []byte, 1)
 	stopchan := make(chan bool, 1)
 	go zs.Listen(metric_chan, stopchan)
 
