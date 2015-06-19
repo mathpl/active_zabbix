@@ -12,8 +12,9 @@ import (
 type HostActiveKeys map[string]time.Duration
 
 type ZabbixActiveClient struct {
-	conn net.Conn
-	addr *net.TCPAddr
+	conn           net.Conn
+	addr           *net.TCPAddr
+	ConnectTimeout time.Duration
 	ZabbixActiveProto
 }
 
@@ -27,7 +28,7 @@ func NewZabbixActiveClient(addr string, receive_timeout uint, send_timeout uint)
 
 func (zc *ZabbixActiveClient) getConn() (err error) {
 	if zc.conn == nil {
-		dialer := net.Dialer{}
+		dialer := &net.Dialer{Timeout: zc.ConnectTimeout}
 		if zc.conn, err = dialer.Dial("tcp", zc.addr.String()); err != nil {
 			return
 		}
